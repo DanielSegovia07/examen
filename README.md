@@ -1,5 +1,5 @@
 ## Shoe-Store
-El proyecto consta de dos entidades principales: Zapatos y Ventas. La entidad Zapato almacena los detalles de los zapatos, incluyendo el nombre, la marca, talla, precio, stock disponible, entre otros. La entidad Venta gestiona las transacciones individuales de venta, donde cada venta está vinculada a un zapato y su cantidad.
+El proyecto consta de dos entidades principales: Zapatos y Ventas. La entidad Zapato almacena los detalles de los zapatos, incluyendo el nombre, la marca, talla, precio y stock disponible. La entidad Venta gestiona las transacciones de venta, donde cada venta está vinculada a un zapato.
 
 1. Clonar el proyecto<br><br>
 2. ```` yarn install```` <br><br>
