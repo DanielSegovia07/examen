@@ -14,11 +14,15 @@ export class VentaController {
     return this.ventaService.create(createVentaDto);
   }
 
-  @Get()
-  findAll(@Query() filtros: FiltroVentasDto) {
-    return this.ventaService.findAll(filtros);
+  @Get('ventaDetalles')  
+  findAlld(@Query() filtros: FiltroVentasDto) {
+    return this.ventaService.findAlld(filtros);
   }
-  
+
+  @Get()
+  findAll() {
+    return this.ventaService.findAll();
+  }
 
   @Get(':id')
   findOne(@Param('id') id: string) {

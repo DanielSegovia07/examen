@@ -43,7 +43,7 @@ export class ZapatosService {
     const zapato =  await this.zapatoRepository.findOne({where:{id, activo : true}})
 
     if (!zapato) {
-      throw new NotFoundException(`Product with ID ${id} not found`);
+      throw new NotFoundException(`Zapato con ID ${id} no encontrado`);
     }
 
     return zapato
@@ -75,7 +75,7 @@ export class ZapatosService {
   async remove(id: number) {
     const zapato = await this.zapatoRepository.findOne({ where: { id } }); 
     if (!zapato) {
-      throw new NotFoundException(`Product with ID ${id} not found`);
+      throw new NotFoundException(`Zapato con ID ${id} no encontrado`);
     }
     
     zapato.activo = false;
@@ -111,7 +111,7 @@ export class ZapatosService {
       throw new BadRequestException(error.detail);
       }
       this.logger.error(error)
-      throw new InternalServerErrorException('Unexpected error, check server logs')
+      throw new InternalServerErrorException('Error inesperado, revise el log de errores')
   }
 
  

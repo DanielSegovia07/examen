@@ -5,7 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Venta } from './entities/venta.entity';
 import { Repository } from 'typeorm';
 import { Zapato } from 'src/zapatos/entities/zapato.entity';
-import { FiltroVentasDto } from './dto/FiltroVentasDto.dto';  // Corregí el nombre del archivo
+import { FiltroVentasDto } from './dto/FiltroVentasDto.dto';  
 
 @Injectable()
 export class VentaService {
@@ -16,7 +16,7 @@ export class VentaService {
     private readonly zapatoRepository: Repository<Zapato>,
   ) {}
 
-  // Método para crear una venta
+  
   async create(createVentaDto: CreateVentaDto) {
     const { zapatoId, cantidad } = createVentaDto;
 
@@ -46,37 +46,20 @@ export class VentaService {
     return venta;
   }
 
-  // Método para obtener todas las ventas
-  async findAll(filtros: FiltroVentasDto) {
-    const queryBuilder = this.ventaRepository.createQueryBuilder('venta')
-      .leftJoinAndSelect('venta.zapato', 'zapato');
-  
-    // Aplicar los filtros si están presentes
-    if (filtros.marca) {
-      queryBuilder.andWhere('zapato.marca = :marca', { marca: filtros.marca });
-    }
-  
-    if (filtros.género) {
-      // Usar un alias sin caracteres especiales para el parámetro
-      queryBuilder.andWhere('zapato.género = :genero', { genero: filtros.género });
-    }
-  
-    if (filtros.categoría) {
-      // Usar un alias sin caracteres especiales para el parámetro
-      queryBuilder.andWhere('zapato.categoría = :categoria', { categoria: filtros.categoría });
-    }
-  
-    // Obtener las ventas
-    const ventas = await queryBuilder.orderBy('venta.id', 'ASC').getMany();
-  
+
+  async findAll() {
+    const ventas = await this.ventaRepository.find({
+      relations: ['zapato'], 
+      order: { id: 'ASC' },
+    });
+
     return ventas.map(venta => ({
       id: venta.id,
-      zapatoId: venta.zapato.id,
+      zapatoId: venta.zapato.id,  
       cantidad: venta.cantidad,
       total: venta.total,
     }));
   }
-  
 
   async findOne(id: number) {
     const venta = await this.ventaRepository.findOne({
@@ -91,7 +74,6 @@ export class VentaService {
     return {
       id: venta.id,
       zapatoId: venta.zapato.id, 
-      marca: venta.zapato.marca,
       cantidad: venta.cantidad,
       total: venta.total,
     };
@@ -107,6 +89,34 @@ export class VentaService {
     return `This action removes a #${id} venta`;
   }
 
+  async findAlld(filtros: FiltroVentasDto) {
+    const queryBuilder = this.ventaRepository.createQueryBuilder('venta')
+      .leftJoinAndSelect('venta.zapato', 'zapato');
+  
+    if (filtros.marca) {
+      queryBuilder.andWhere('zapato.marca = :marca', { marca: filtros.marca });
+    }
+  
+    if (filtros.género) {
+      queryBuilder.andWhere('zapato.género = :genero', { genero: filtros.género });
+    }
+  
+    if (filtros.categoría) {
+      queryBuilder.andWhere('zapato.categoría = :categoria', { categoria: filtros.categoría });
+    }
+  
+    const ventas = await queryBuilder.orderBy('venta.id', 'ASC').getMany();
+  
+    return ventas.map(venta => ({
+      id: venta.id,
+      zapatoId: venta.zapato.id,
+      marca: venta.zapato.marca,
+      categoria: venta.zapato.categoría,
+      genero: venta.zapato.género,
+      cantidad: venta.cantidad,
+      total: venta.total,
+    }));
+  }
   
 
 
