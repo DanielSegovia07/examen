@@ -10,12 +10,16 @@ yarn add @nestjs/config
 yarn add typeorm @nestjs/typeorm mysql2
 yarn add class-validator class-transformer
 ```
+6. Descargar imagen de postgres
+```
+docker pull postgres:14.3
+```
 
-6. Levantar la base de datos
+7. Levantar la base de datos
 ```
  docker-compose up -d
 ```
-7. Levantar proyecto 
+8. Levantar proyecto 
 ```
 yarn start:dev
 ```
